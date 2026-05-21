@@ -1,5 +1,5 @@
 import { Menu, X } from "lucide-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AdminLoginContext } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -7,6 +7,8 @@ function AdminHeader() {
   const [isProductsOpen, setProductsOpen] = useState(false);
   const [isProfilesOpen, setProfilesOpen] = useState(false);
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const productsRef = useRef(null);
+  const profilesRef = useRef(null);
   const { setAdminLogin } = useContext(AdminLoginContext);
   const navigate = useNavigate();
 
@@ -30,6 +32,26 @@ function AdminHeader() {
     navigate("/manage-admin");
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Products dropdown close
+      if (productsRef.current && !productsRef.current.contains(event.target)) {
+        setProductsOpen(false);
+      }
+
+      // Profiles dropdown close
+      if (profilesRef.current && !profilesRef.current.contains(event.target)) {
+        setProfilesOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-white shadow-md">
       <nav className="container mx-auto flex justify-around items-center px-4 py-3">
@@ -50,7 +72,7 @@ function AdminHeader() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
           {/* Products Dropdown */}
-          <li className="relative">
+          <li className="relative" ref={productsRef}>
             <button
               onClick={() => setProductsOpen(!isProductsOpen)}
               className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
@@ -73,7 +95,7 @@ function AdminHeader() {
           </li>
 
           {/* Profiles Dropdown */}
-          <li className="relative">
+          <li className="relative" ref={profilesRef}>
             <button
               onClick={() => setProfilesOpen(!isProfilesOpen)}
               className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
@@ -99,7 +121,7 @@ function AdminHeader() {
           </li>
 
           {/* Manage Profile */}
-          <li>
+          <li ref={profilesRef}>
             <button
               className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
               onClick={redirectToManageAdmin}
@@ -110,7 +132,7 @@ function AdminHeader() {
         </ul>
 
         {/* Right side login/logout (Desktop) */}
-        <div className="hidden md:block">
+        <div className="hidden md:block" ref={profilesRef}>
           <button
             onClick={handleLogOut}
             className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors"
