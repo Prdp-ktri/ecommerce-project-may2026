@@ -1,0 +1,15 @@
+{
+  "buyers": [
+    {
+      "name": "Lokesh Modi",
+      "age": "37",
+      "email": "lokeshmodi@gmail.com",
+      "phone": "+91-8643215697",
+      "password": "LK@buyer",
+      "address": "Navrangpura, Jaipur",
+      "selectedState": "Rajasthan",
+      "pin": "305022",
+      "id": "9d19"
+    }
+  ]
+}

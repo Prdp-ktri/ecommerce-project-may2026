@@ -1,0 +1,17 @@
+{
+  "sellers": [
+    {
+      "id": "d430",
+      "name": "Akash",
+      "email": "akash@gmail.com",
+      "phone": "+91-7726806658",
+      "password": "AM@seller",
+      "address": "Random Address, Citaphal Colony, Nayak Road, Ramnagar",
+      "selectedState": "Gujarat",
+      "pin": "305000",
+      "storeName": "Akashic Records",
+      "gst": "08EIYPK5827C1ZS",
+      "trademark": "112045689"
+    }
+  ]
+}
