@@ -51,7 +51,7 @@ function BuyerDashboard() {
   const goToEditProfile = () => navigate("/edit-profile");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-teal-50 pt-6 p-12">
+    <div className="w-full min-h-screen bg-gradient-to-br from-yellow-50 to-teal-50 pt-6 p-12">
       {/* 🟢 Welcome Header */}
       <div
         style={{

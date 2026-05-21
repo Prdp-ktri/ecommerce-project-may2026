@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react"; // for icons
 import { Link, useNavigate } from "react-router-dom";
 import { SellerLoginContext } from "../../App";
@@ -6,6 +6,9 @@ import { SellerLoginContext } from "../../App";
 function SellerHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const productsRef = useRef(null);
+  const ordersRef = useRef(null);
+  const mobileMenuRef = useRef(null);
   const { setSellerLogin } = useContext(SellerLoginContext);
   const navigate = useNavigate();
 
@@ -36,8 +39,40 @@ function SellerHeader() {
 
   const newOrders = (e) => {
     e.preventDefault();
-    navigate("/new-orders-of-seller")
-  }
+    navigate("/new-orders-of-seller");
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Products dropdown
+      if (productsRef.current && !productsRef.current.contains(event.target)) {
+        if (openDropdown === "products") {
+          setOpenDropdown(null);
+        }
+      }
+
+      // Orders dropdown
+      if (ordersRef.current && !ordersRef.current.contains(event.target)) {
+        if (openDropdown === "orders") {
+          setOpenDropdown(null);
+        }
+      }
+
+      // Mobile menu
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
 
   return (
     <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-blue-500 via-blue-400 to-green-400 text-white shadow-md z-50">
@@ -48,7 +83,7 @@ function SellerHeader() {
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center space-x-6">
           {/* Manage Products */}
-          <div className="relative">
+          <div className="relative" ref={productsRef}>
             <button
               onClick={() => toggleDropdown("products")}
               className="flex items-center hover:text-gray-200"
@@ -74,7 +109,7 @@ function SellerHeader() {
           </div>
 
           {/* Manage Orders */}
-          <div className="relative">
+          <div className="relative" ref={ordersRef}>
             <button
               onClick={() => toggleDropdown("orders")}
               className="flex items-center hover:text-gray-200"
@@ -135,7 +170,10 @@ function SellerHeader() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-gradient-to-r from-blue-500 via-blue-400 to-green-400">
+        <div
+          className="md:hidden bg-gradient-to-r from-blue-500 via-blue-400 to-green-400"
+          ref={mobileMenuRef}
+        >
           <div className="px-4 py-3 space-y-2">
             <button
               onClick={() => toggleDropdown("products")}

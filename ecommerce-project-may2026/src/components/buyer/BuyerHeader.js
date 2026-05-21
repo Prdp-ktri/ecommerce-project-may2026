@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ChevronDown, ShoppingCart } from "lucide-react"; // Imported ShoppingCart icon
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,6 +10,10 @@ function BuyerHeader() {
   const [openDropdown, setOpenDropdown] = useState(null);
   // State to hold the current number of items in the cart
   const [cartItemCount, setCartItemCount] = useState(0);
+
+  const productsRef = useRef(null);
+  const deliveryRef = useRef(null);
+  const profileRef = useRef(null);
 
   // Function to read the cart count from localStorage
   const getCartCount = () => {
@@ -44,6 +48,37 @@ function BuyerHeader() {
       clearInterval(interval);
     };
   }, []); // Run only on mount
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Products
+      if (productsRef.current && !productsRef.current.contains(event.target)) {
+        if (openDropdown === "products") {
+          setOpenDropdown(null);
+        }
+      }
+
+      // Delivery
+      if (deliveryRef.current && !deliveryRef.current.contains(event.target)) {
+        if (openDropdown === "delivery") {
+          setOpenDropdown(null);
+        }
+      }
+
+      // Profile
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        if (openDropdown === "profile") {
+          setOpenDropdown(null);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openDropdown]);
 
   // const handleDropdown = (menu) => {
   //   setOpenDropdown(openDropdown === menu ? null : menu);
@@ -83,7 +118,7 @@ function BuyerHeader() {
 
   return (
     <header className="bg-gradient-to-r from-orange-500 to-yellow-400 shadow-md relative z-50">
-      <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+      <div className="w-full px-6 py-3 flex justify-between items-center">
         {/* Logo / Title */}
         <div className="text-white text-2xl font-bold tracking-wide">
           Buyer Portal
@@ -93,12 +128,13 @@ function BuyerHeader() {
         {/* Added extra space for the cart icon */}
         <nav className="flex space-x-6 text-white font-medium items-center relative">
           {/* Products Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setOpenDropdown("products")}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none">
+          <div className="relative" ref={productsRef}>
+            <button
+              onClick={() =>
+                setOpenDropdown(openDropdown === "products" ? null : "products")
+              }
+              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+            >
               <span>Products</span>
               <ChevronDown size={16} />
             </button>
@@ -121,12 +157,13 @@ function BuyerHeader() {
           </div>
 
           {/* Delivery Status Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setOpenDropdown("delivery")}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none">
+          <div className="relative" ref={deliveryRef}>
+            <button
+              onClick={() =>
+                setOpenDropdown(openDropdown === "delivery" ? null : "delivery")
+              }
+              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+            >
               <span>Delivery Status</span>
               <ChevronDown size={16} />
             </button>
@@ -149,12 +186,13 @@ function BuyerHeader() {
           </div>
 
           {/* Manage Profile Dropdown */}
-          <div
-            className="relative"
-            onMouseEnter={() => setOpenDropdown("profile")}
-            onMouseLeave={() => setOpenDropdown(null)}
-          >
-            <button className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none">
+          <div className="relative" ref={profileRef}>
+            <button
+              onClick={() =>
+                setOpenDropdown(openDropdown === "profile" ? null : "profile")
+              }
+              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+            >
               <span>Manage Profile</span>
               <ChevronDown size={16} />
             </button>

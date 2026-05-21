@@ -54,7 +54,7 @@ export default function BuyerCreation() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-400 py-12 px-4"
+      className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 to-orange-400 py-12 px-4"
       style={{ width: "100vw", height: "100vh" }}
     >
       <div className="max-w-2xl w-full bg-white/60 backdrop-blur-md rounded-2xl shadow-2xl p-8 sm:p-10 border border-yellow-100">
