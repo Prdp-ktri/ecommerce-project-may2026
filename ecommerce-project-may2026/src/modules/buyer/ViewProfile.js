@@ -35,8 +35,8 @@ function ViewProfile() {
     return <p className="p-8 text-center text-red-500">Profile not found!</p>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-yellow-50 flex items-center justify-center p-6">
-      <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-4xl w-full border-t-4 border-teal-500">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-yellow-50 p-6">
+      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full border-t-4 border-teal-500">
         <h1 className="text-3xl font-bold text-teal-700 mb-6 text-center">
           Your Profile
         </h1>
