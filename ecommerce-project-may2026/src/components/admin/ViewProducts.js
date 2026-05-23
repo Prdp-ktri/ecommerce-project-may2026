@@ -4,6 +4,7 @@ function ViewProducts() {
   const [details, setDetails] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [expanded, setExpanded] = useState({});
+  const [maxPrice, setMaxPrice] = useState(149999);
 
   useEffect(() => {
     fetch("http://localhost:9000/products")
@@ -13,11 +14,20 @@ function ViewProducts() {
       });
   }, []);
 
-  const filteredProducts = selectedCategory
-    ? details.filter(
-        (v) => v.productCat.toLowerCase() === selectedCategory.toLowerCase()
-      )
-    : details;
+  const highestMRP =
+    details.length > 0
+      ? Math.max(...details.map((item) => Number(item.mrp)))
+      : 149999;
+
+  const filteredProducts = details.filter((v) => {
+    const categoryMatch = selectedCategory
+      ? v.productCat.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
+
+    const priceMatch = Number(v.mrp) <= maxPrice;
+
+    return categoryMatch && priceMatch;
+  });
 
   const toggleExpand = (id) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -46,6 +56,22 @@ function ViewProducts() {
             <option value="mats">Mats</option>
           </select>
         </div>
+
+        <div className="flex flex-col items-center mb-6">
+          <label className="font-semibold text-gray-700 mb-2">
+            Maximum Price: ₹{maxPrice}
+          </label>
+
+          <input
+            type="range"
+            min="4999"
+            max={149999}
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+            className="w-72 accent-teal-600 cursor-pointer"
+          />
+        </div>
+
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-teal-500 text-white text-left">
