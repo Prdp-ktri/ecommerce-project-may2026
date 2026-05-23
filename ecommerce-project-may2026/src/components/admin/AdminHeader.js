@@ -62,15 +62,15 @@ function AdminHeader() {
           alt="Fashion-Retreat"
           style={{
             zIndex: "2",
-            height: "150px",
-            width: "100px",
+            height: "75px",
+            width: "150px",
             backgroundColor: "white",
             display: "flex",
             justifyContent: "end",
           }}
         />
         <div className="text-xl font-bold tracking-wide">
-          Fashion Retreat with Furnishing Homes
+          Fashion Retreat & Furnishing Homes
         </div>
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
@@ -98,7 +98,7 @@ function AdminHeader() {
           </li>
 
           {/* Profiles Dropdown */}
-          <li className="relative" ref={profilesRef}>
+          <li className="relative">
             <button
               onClick={() => setProfilesOpen(!isProfilesOpen)}
               className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
@@ -124,7 +124,7 @@ function AdminHeader() {
           </li>
 
           {/* Manage Profile */}
-          <li ref={profilesRef}>
+          <li className="relative" ref={profilesRef}>
             <button
               className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
               onClick={redirectToManageAdmin}
@@ -135,7 +135,7 @@ function AdminHeader() {
         </ul>
 
         {/* Right side login/logout (Desktop) */}
-        <div className="hidden md:block" ref={profilesRef}>
+        <div className="hidden md:block">
           <button
             onClick={handleLogOut}
             className="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition-colors"
