@@ -97,32 +97,6 @@ function AdminHeader() {
             )}
           </li>
 
-          {/* Profiles Dropdown */}
-          <li className="relative">
-            <button
-              onClick={() => setProfilesOpen(!isProfilesOpen)}
-              className="flex items-center space-x-1 px-3 py-2 rounded-md bg-gray-700 hover:bg-gray-600 transition-colors"
-            >
-              Profiles
-            </button>
-            {isProfilesOpen && (
-              <ul className="absolute bg-white text-gray-800 mt-2 rounded-lg shadow-lg w-40 animate-fade-in">
-                <button
-                  className="px-4 py-2 hover:bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% cursor-pointer"
-                  onClick={showSellers}
-                >
-                  Sellers
-                </button>
-                <button
-                  className="px-4 py-2 hover:bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% cursor-pointer"
-                  onClick={showCustomers}
-                >
-                  Buyers
-                </button>
-              </ul>
-            )}
-          </li>
-
           {/* Manage Profile */}
           <li className="relative" ref={profilesRef}>
             <button
