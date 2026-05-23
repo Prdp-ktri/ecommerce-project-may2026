@@ -2,6 +2,7 @@ import { Menu, X } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AdminLoginContext } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
+import fashionRetreat from "../../fashion-retreat.jpg";
 
 function AdminHeader() {
   const [isProductsOpen, setProductsOpen] = useState(false);
@@ -57,18 +58,20 @@ function AdminHeader() {
       <nav className="container mx-auto flex justify-around items-center px-4 py-3">
         {/* Logo / Brand */}
         <img
-          src="/Finesse-Logo.png"
-          alt=""
+          src={fashionRetreat}
+          alt="Fashion-Retreat"
           style={{
             zIndex: "2",
-            height: "75px",
-            width: "150px",
+            height: "150px",
+            width: "100px",
             backgroundColor: "white",
             display: "flex",
             justifyContent: "end",
           }}
         />
-        <div className="text-xl font-bold tracking-wide">Furnishing Homes</div>
+        <div className="text-xl font-bold tracking-wide">
+          Fashion Retreat with Furnishing Homes
+        </div>
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
           {/* Products Dropdown */}

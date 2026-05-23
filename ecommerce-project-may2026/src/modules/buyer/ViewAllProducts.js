@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 function ViewAllProducts() {
   const [allLatchedProducts, setAllLatchedProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [maxPrice, setMaxPrice] = useState(149999);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function ViewAllProducts() {
     });
 
     const sortedProducts = allProducts.sort((a, b) =>
-      a.productCategory?.localeCompare(b.productCategory)
+      a.productCategory?.localeCompare(b.productCategory),
     );
 
     setAllLatchedProducts(sortedProducts);
@@ -39,12 +40,15 @@ function ViewAllProducts() {
     navigate(`/product/${productId}`);
   };
 
-  const filteredProducts = selectedCategory
-    ? allLatchedProducts.filter(
-        (p) =>
-          p.productCategory?.toLowerCase() === selectedCategory.toLowerCase()
-      )
-    : allLatchedProducts;
+  const filteredProducts = allLatchedProducts.filter((p) => {
+    const categoryMatch = selectedCategory
+      ? p.productCategory?.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
+
+    const priceMatch = Number(p.price) <= maxPrice;
+
+    return categoryMatch && priceMatch;
+  });
 
   return (
     <div className="p-6">
@@ -64,6 +68,25 @@ function ViewAllProducts() {
           <option value="sofa">Sofa</option>
           <option value="mats">Mats</option>
         </select>
+      </div>
+
+      <div className="flex flex-col items-center mb-8">
+        <label className="font-semibold text-gray-700 mb-2">
+          Maximum Price: ₹{maxPrice}
+        </label>
+
+        <input
+          type="range"
+          min="4999"
+          max="149999"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
+          className="w-72 accent-teal-600 cursor-pointer"
+        />
+        <div className="flex justify-between w-72 text-sm text-gray-600 mt-1">
+          <span>₹4999</span>
+          <span>₹149999</span>
+        </div>
       </div>
 
       {filteredProducts.length > 0 ? (

@@ -43,7 +43,7 @@ function LoginPortal() {
 
     if (role === "admin") {
       const adminUser = admins.find(
-        (v) => v.email === email && v.password === password
+        (v) => v.email === email && v.password === password,
       );
       if (adminUser) {
         toast("Welcome to the Admin Dashboard!");
@@ -56,7 +56,7 @@ function LoginPortal() {
 
     if (role === "seller") {
       const sellerUser = sellers.find(
-        (v) => v.email === email && v.password === password
+        (v) => v.email === email && v.password === password,
       );
       if (sellerUser) {
         // ✅ Store only the logged-in seller
@@ -71,7 +71,7 @@ function LoginPortal() {
 
     if (role === "buyer") {
       const buyerUser = buyers.find(
-        (v) => v.email === email && v.password === password
+        (v) => v.email === email && v.password === password,
       );
       if (buyerUser) {
         localStorage.setItem("loggedInBuyer", JSON.stringify(buyerUser));
@@ -85,24 +85,26 @@ function LoginPortal() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-      <div className="bg-white shadow-xl rounded-2xl p-10 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+    <div className="w-screen min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center px-4">
+      <div className="w-full max-w-md rounded-2xl bg-white/10 backdrop-blur-lg shadow-2xl p-10 border border-white/20">
+        <h2 className="text-3xl font-bold text-center text-white mb-8">
           Choose Your Login Portal
         </h2>
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label
               htmlFor="role"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Select Role
             </label>
+
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-700 outline-none"
             >
               <option value="admin">Admin Login</option>
               <option value="seller">Seller Login</option>
@@ -113,40 +115,42 @@ function LoginPortal() {
           <div>
             <label
               htmlFor="emailInp"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Email
             </label>
+
             <input
               type="email"
               id="emailInp"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition placeholder-gray-400"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-700 outline-none"
             />
           </div>
 
           <div>
             <label
               htmlFor="passwordInp"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Password
             </label>
+
             <input
               type="password"
               id="passwordInp"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full rounded-xl border border-gray-300 bg-gray-50 px-4 py-3 text-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition placeholder-gray-400"
+              className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-700 outline-none"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition-transform transform hover:scale-105"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-lg transition duration-300"
           >
             Continue
           </button>
