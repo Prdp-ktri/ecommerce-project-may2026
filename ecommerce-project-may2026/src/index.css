@@ -26,3 +26,18 @@ code {
 .slow-spin {
   animation: slow-spin 12s linear infinite;
 }
+
+/* For Buyer Dashboard */
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.slow-spin {
+  animation: slow-spin 12s linear infinite;
+}
