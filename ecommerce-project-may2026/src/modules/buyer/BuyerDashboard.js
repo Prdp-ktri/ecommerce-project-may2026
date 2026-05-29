@@ -72,7 +72,7 @@ function BuyerDashboard() {
   const goToEditProfile = () => navigate("/edit-profile");
 
   return (
-    <div className="relative overflow-hidden w-full min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 pt-10 p-8 text-white">
+    <div className="relative overflow-hidden w-full min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 pt-28 md:pt-32 p-8 text-white">
       {/* Animated Background Blobs */}
 
       <div className="absolute top-0 left-0 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
