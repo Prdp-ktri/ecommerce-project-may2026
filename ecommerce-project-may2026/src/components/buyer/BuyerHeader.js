@@ -117,96 +117,169 @@ function BuyerHeader() {
   // };
 
   return (
-    <header className="bg-gradient-to-r from-orange-500 to-yellow-400 shadow-md relative z-50">
-      <div className="w-full px-6 py-3 flex justify-between items-center">
-        {/* Logo / Title */}
-        <div className="text-white text-2xl font-bold tracking-wide">
-          Buyer Portal
+    <header className="fixed top-0 left-0 w-full z-50 text-white">
+      {/* Background */}
+
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-orange-950 to-slate-950 opacity-95 backdrop-blur-xl border-b border-orange-400/10"></div>
+
+      {/* Glow Effects */}
+
+      <div className="absolute top-0 left-20 w-72 h-72 bg-orange-500/20 blur-3xl rounded-full animate-pulse"></div>
+
+      <div className="absolute top-0 right-20 w-72 h-72 bg-yellow-500/20 blur-3xl rounded-full animate-pulse delay-1000"></div>
+
+      {/* NAVBAR */}
+
+      <div className="relative z-10 w-full px-6 py-4 flex justify-between items-center">
+        {/* LEFT SECTION */}
+
+        <div className="flex items-center gap-5">
+          {/* Ecommerce Logo */}
+
+          <div className="relative">
+            <div className="absolute inset-0 bg-orange-400 blur-2xl opacity-30"></div>
+
+            <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center shadow-[0_0_25px_rgba(255,165,0,0.35)] border border-white/20">
+              <ShoppingCart className="text-white" size={32} />
+            </div>
+          </div>
+
+          {/* Brand */}
+
+          <div>
+            <h1 className="text-2xl font-extrabold bg-gradient-to-r from-white via-orange-200 to-yellow-300 bg-clip-text text-transparent">
+              Buyer Portal
+            </h1>
+
+            <p className="text-sm text-orange-200 tracking-wide">
+              Smart Ecommerce Shopping Experience
+            </p>
+          </div>
         </div>
 
-        {/* Nav Links */}
-        {/* Added extra space for the cart icon */}
-        <nav className="flex space-x-6 text-white font-medium items-center relative">
-          {/* Products Dropdown */}
+        {/* NAVIGATION */}
+
+        <nav className="hidden lg:flex items-center gap-6 relative">
+          {/* PRODUCTS */}
+
           <div className="relative" ref={productsRef}>
             <button
               onClick={() =>
                 setOpenDropdown(openDropdown === "products" ? null : "products")
               }
-              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+              className="relative overflow-hidden flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/15 backdrop-blur-xl border border-orange-400/20 text-white hover:border-orange-300 hover:bg-orange-500/20 hover:text-orange-100 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(255,165,0,0.2)]"
             >
-              <span>Products</span>
-              <ChevronDown size={16} />
+              <span className="absolute inset-0 opacity-0 hover:opacity-100 bg-gradient-to-r from-transparent via-white/10 to-transparent transition duration-500"></span>
+
+              <ShoppingCart
+                size={18}
+                className="text-orange-300 relative z-10"
+              />
+
+              <span className="relative z-10 font-medium">Products</span>
+
+              <ChevronDown size={18} className="relative z-10" />
             </button>
+
+            {/* Dropdown */}
+
             {openDropdown === "products" && (
-              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg transition-all duration-200">
+              <div className="absolute top-16 left-0 w-64 bg-slate-800/95 backdrop-blur-2xl border border-orange-400/20 rounded-3xl shadow-[0_0_40px_rgba(255,165,0,0.2)] overflow-hidden animate-fade-in">
                 <button
                   onClick={SearchProducts}
-                  className="block px-4 py-2 hover:bg-yellow-100 rounded-t-md"
+                  className="w-full text-left flex items-center gap-3 px-5 py-4 text-white hover:bg-orange-400/20 hover:text-orange-200 transition border-b border-white/5"
                 >
+                  <ShoppingCart size={18} className="text-orange-300" />
                   Search Products
                 </button>
+
                 <button
                   onClick={ViewAllProducts}
-                  className="block w-full text-left px-4 py-2 hover:bg-yellow-100 rounded-b-md"
+                  className="w-full text-left flex items-center gap-3 px-5 py-4 text-white hover:bg-yellow-400/20 hover:text-yellow-200 transition"
                 >
+                  <ShoppingCart size={18} className="text-yellow-300" />
                   View All Products
                 </button>
               </div>
             )}
           </div>
 
-          {/* Delivery Status Dropdown */}
+          {/* DELIVERY */}
+
           <div className="relative" ref={deliveryRef}>
             <button
               onClick={() =>
                 setOpenDropdown(openDropdown === "delivery" ? null : "delivery")
               }
-              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+              className="relative overflow-hidden flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/15 backdrop-blur-xl border border-cyan-400/20 text-white hover:border-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-100 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(0,200,255,0.2)]"
             >
-              <span>Delivery Status</span>
-              <ChevronDown size={16} />
+              <span className="absolute inset-0 opacity-0 hover:opacity-100 bg-gradient-to-r from-transparent via-white/10 to-transparent transition duration-500"></span>
+
+              <ShoppingCart size={18} className="text-cyan-300 relative z-10" />
+
+              <span className="relative z-10 font-medium">Delivery Status</span>
+
+              <ChevronDown size={18} className="relative z-10" />
             </button>
+
+            {/* Dropdown */}
+
             {openDropdown === "delivery" && (
-              <div className="absolute left-0 mt-2 w-52 bg-white text-gray-800 rounded-md shadow-lg transition-all duration-200">
+              <div className="absolute top-16 left-0 w-72 bg-slate-800/95 backdrop-blur-2xl border border-cyan-400/20 rounded-3xl shadow-[0_0_40px_rgba(0,200,255,0.2)] overflow-hidden animate-fade-in">
                 <button
                   onClick={trackyourorder}
-                  className="block px-4 py-2 hover:bg-yellow-100 rounded-t-md"
+                  className="w-full text-left flex items-center gap-3 px-5 py-4 text-white hover:bg-cyan-400/20 hover:text-cyan-200 transition border-b border-white/5"
                 >
+                  <ShoppingCart size={18} className="text-cyan-300" />
                   Track Your Order
                 </button>
+
                 <button
                   onClick={deliveredOrders}
-                  className="block px-4 py-2 hover:bg-yellow-100 rounded-b-md"
+                  className="w-full text-left flex items-center gap-3 px-5 py-4 text-white hover:bg-green-400/20 hover:text-green-200 transition"
                 >
+                  <ShoppingCart size={18} className="text-green-300" />
                   Delivered Orders
                 </button>
               </div>
             )}
           </div>
 
-          {/* Manage Profile Dropdown */}
+          {/* PROFILE */}
+
           <div className="relative" ref={profileRef}>
             <button
               onClick={() =>
                 setOpenDropdown(openDropdown === "profile" ? null : "profile")
               }
-              className="flex items-center space-x-1 hover:text-gray-200 focus:outline-none"
+              className="relative overflow-hidden flex items-center gap-2 px-5 py-3 rounded-2xl bg-white/15 backdrop-blur-xl border border-yellow-400/20 text-white hover:border-yellow-300 hover:bg-yellow-500/20 hover:text-yellow-100 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(255,255,0,0.2)]"
             >
-              <span>Manage Profile</span>
-              <ChevronDown size={16} />
+              <span className="absolute inset-0 opacity-0 hover:opacity-100 bg-gradient-to-r from-transparent via-white/10 to-transparent transition duration-500"></span>
+
+              <ShoppingCart
+                size={18}
+                className="text-yellow-300 relative z-10"
+              />
+
+              <span className="relative z-10 font-medium">Manage Profile</span>
+
+              <ChevronDown size={18} className="relative z-10" />
             </button>
+
+            {/* Dropdown */}
+
             {openDropdown === "profile" && (
-              <div className="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg transition-all duration-200">
+              <div className="absolute top-16 left-0 w-64 bg-slate-800/95 backdrop-blur-2xl border border-yellow-400/20 rounded-3xl shadow-[0_0_40px_rgba(255,255,0,0.2)] overflow-hidden animate-fade-in">
                 <Link
                   to={"/edit-profile"}
-                  className="block px-4 py-2 hover:bg-yellow-100 rounded-md"
+                  className="block px-5 py-4 text-white hover:bg-yellow-400/20 hover:text-yellow-200 transition border-b border-white/5"
                 >
                   Edit Profile
                 </Link>
+
                 <Link
                   to={"/view-profile"}
-                  className="block px-4 py-2 hover:bg-yellow-100 rounded-md"
+                  className="block px-5 py-4 text-white hover:bg-orange-400/20 hover:text-orange-200 transition"
                 >
                   View Profile
                 </Link>
@@ -214,27 +287,35 @@ function BuyerHeader() {
             )}
           </div>
 
-          {/* ✅ NEW: Cart Icon Button */}
+          {/* CART */}
+
           <button
             onClick={goToCart}
-            className="relative p-2 hover:bg-yellow-500/20 rounded-full transition focus:outline-none"
+            className="relative overflow-hidden p-4 rounded-2xl bg-white/15 backdrop-blur-xl border border-orange-400/20 text-white hover:border-orange-300 hover:bg-orange-500/20 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(255,165,0,0.25)]"
             aria-label={`Shopping Cart with ${cartItemCount} items`}
           >
-            <ShoppingCart size={24} />
-            {/* Cart Count Badge */}
+            <span className="absolute inset-0 opacity-0 hover:opacity-100 bg-gradient-to-r from-transparent via-white/10 to-transparent transition duration-500"></span>
+
+            <ShoppingCart size={24} className="relative z-10 text-orange-300" />
+
+            {/* Cart Badge */}
+
             {cartItemCount > 0 && (
-              <span className="absolute top-0 right-0 transform translate-x-1 -translate-y-1 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-orange-500">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold min-w-[22px] h-[22px] flex items-center justify-center rounded-full border-2 border-slate-900 shadow-[0_0_20px_rgba(255,0,100,0.5)] animate-pulse">
                 {cartItemCount}
               </span>
             )}
           </button>
 
-          {/* Sign Out Button */}
+          {/* SIGN OUT */}
+
           <button
             onClick={SignOut}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
+            className="group relative overflow-hidden bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 px-5 py-3 rounded-2xl font-semibold shadow-[0_0_30px_rgba(255,0,100,0.35)] hover:scale-105 hover:shadow-[0_0_35px_rgba(255,0,100,0.5)] transition-all duration-300"
           >
-            Sign Out
+            <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"></span>
+
+            <span className="relative">Sign Out</span>
           </button>
         </nav>
       </div>
