@@ -24,7 +24,7 @@ import LatchedProducts from "./modules/seller/LatchedProducts";
 import { LatchedProductsProvider } from "./context/LatchedProductsContext";
 import ViewAllProducts from "./modules/buyer/ViewAllProducts";
 import ProductDetails from "./modules/buyer/ProductDetails";
-import Cart from "./modules/buyer/Cart";
+import Cart from "./modules/buyer/Cart"; 
 import PlaceOrder from "./modules/buyer/PlaceOrder";
 import TrackYourOrder from "./modules/buyer/TrackYourOrder";
 import TrackingPage from "./modules/buyer/TrackingPage";

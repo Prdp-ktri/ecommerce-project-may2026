@@ -2,14 +2,13 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 function SearchProducts() {
-  // State for all products loaded from localStorage
   const [allLatchedProducts, setAllLatchedProducts] = useState([]);
-  // State for the current search query
   const [searchTerm, setSearchTerm] = useState("");
-  // Router hook
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [maxPrice, setMaxPrice] = useState(149999);
+
   const navigate = useNavigate();
 
-  // Load all products from localStorage when the component mounts
   useEffect(() => {
     const allKeys = Object.keys(localStorage);
     const allProducts = [];
@@ -17,15 +16,18 @@ function SearchProducts() {
     allKeys.forEach((key) => {
       if (key.startsWith("latchedProducts_")) {
         const stored = localStorage.getItem(key);
+
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
 
-            // Extract sellerEmail from the key
             const sellerEmail = key.replace("latchedProducts_", "");
-            // Assuming 'parsed' is an array of products for that seller
+
             parsed.forEach((p) => {
-              allProducts.push({ ...p, sellerEmail });
+              allProducts.push({
+                ...p,
+                sellerEmail,
+              });
             });
           } catch (error) {
             console.error("Error parsing latched products for key:", key);
@@ -33,128 +35,211 @@ function SearchProducts() {
         }
       }
     });
+
     setAllLatchedProducts(allProducts);
   }, []);
 
-  // Use useMemo to filter the products whenever allLatchedProducts or searchTerm changes
   const filteredProducts = useMemo(() => {
-    if (!searchTerm) {
-      return allLatchedProducts; // Return all products if search term is empty
-    }
-
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
 
-    // Filter products whose name (or store name) includes the search term
-    return allLatchedProducts.filter(
-      (product) =>
-        product.productName.toLowerCase().includes(lowerCaseSearchTerm) ||
-        (product.storeName &&
-          product.storeName.toLowerCase().includes(lowerCaseSearchTerm))
-    );
-  }, [allLatchedProducts, searchTerm]); // Dependencies for recalculation
+    return allLatchedProducts.filter((product) => {
+      const searchMatch =
+        !searchTerm ||
+        product.productName?.toLowerCase().includes(lowerCaseSearchTerm) ||
+        product.storeName?.toLowerCase().includes(lowerCaseSearchTerm);
 
-  // Handler for navigation to product details page
+      const categoryMatch =
+        !selectedCategory ||
+        product.productCategory?.toLowerCase().trim() ===
+          selectedCategory.toLowerCase();
+
+      const priceMatch = Number(product.price) <= maxPrice;
+
+      return searchMatch && categoryMatch && priceMatch;
+    });
+  }, [allLatchedProducts, searchTerm, selectedCategory, maxPrice]);
+
   const handleViewDetails = (productId) => {
     navigate(`/product/${productId}`);
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-extrabold text-teal-800 mb-6 border-b-2 border-teal-200 pb-2">
-        Discover Products
-      </h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 text-white pt-32 px-6 pb-10 relative overflow-hidden">
+      {/* Background Glow Effects */}
 
-      {/* Visually Appealing Search Bar */}
-      <div className="mb-8 max-w-lg mx-auto">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search products by name or store..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 pl-10 border-2 border-teal-400 rounded-full shadow-lg focus:outline-none focus:ring-4 focus:ring-teal-200 transition-all duration-300 placeholder-gray-500 text-gray-800"
-          />
-          {/* Search Icon */}
-          <svg
-            className="w-5 h-5 text-teal-500 absolute left-3 top-1/2 transform -translate-y-1/2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
-          </svg>
-          {/* Clear Button */}
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500 p-1"
-              aria-label="Clear search"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
-            </button>
-          )}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl"></div>
+
+      {/* Header */}
+
+      <div className="text-center mb-12 relative z-10">
+        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-orange-300 via-yellow-300 to-orange-500 bg-clip-text text-transparent mb-3">
+          Search Products
+        </h1>
+
+        <p className="text-gray-300 text-lg">
+          Find products instantly with smart filters
+        </p>
+
+        <div className="mt-5 inline-block bg-orange-500/20 border border-orange-400/20 px-5 py-2 rounded-full">
+          <span className="text-orange-300 font-semibold">
+            {filteredProducts.length} Products Found
+          </span>
         </div>
       </div>
 
-      {/* Displaying Products */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product, index) => (
-            <div
-              key={product.id || index} // Prefer product.id for key, fallback to index
-              onClick={() => handleViewDetails(product.id)}
-              className="cursor-pointer bg-white rounded-xl shadow-lg p-4 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 flex flex-col items-center"
-            >
-              <img
-                src={product.productImages}
-                alt={product.productName}
-                className="w-full h-40 object-cover rounded-lg mb-3"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src =
-                    "https://via.placeholder.com/160x160.png?text=No+Image"; // Placeholder for broken image
-                }}
+      {/* Search & Filters */}
+
+      <div className="max-w-6xl mx-auto mb-12 relative z-10">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+          <h3 className="text-2xl font-bold text-orange-300 mb-6">
+            Search & Filter Products
+          </h3>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Search Box */}
+
+            <div>
+              <label className="block mb-3 font-semibold text-orange-200">
+                Search Product
+              </label>
+
+              <input
+                type="text"
+                placeholder="Search by product or seller..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400"
               />
-              <h3 className="text-lg font-bold text-gray-800 text-center mb-1 truncate w-full">
-                {product.productName}
-              </h3>
-              <p className="text-xl font-extrabold text-red-600 mb-2">
-                ₹{product.price}
-              </p>
-              <p className="text-sm font-medium text-white bg-teal-600 px-3 py-1 rounded-full">
-                Seller: {product.storeName}
-              </p>
             </div>
-          ))
-        ) : (
-          <div className="col-span-full text-center py-10">
-            <p className="text-xl text-gray-500">
-              {searchTerm
-                ? `No products found matching "${searchTerm}".`
-                : "No products are currently available."}
-            </p>
+
+            {/* Category */}
+
+            <div>
+              <label className="block mb-3 font-semibold text-orange-200">
+                Category
+              </label>
+
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white focus:outline-none focus:ring-2 focus:ring-orange-400"
+              >
+                <option value="">All Categories</option>
+
+                <option value="bed">Bed</option>
+
+                <option value="mattress">Mattress</option>
+
+                <option value="sofa">Sofa</option>
+
+                <option value="mats">Mats</option>
+              </select>
+            </div>
+
+            {/* Maximum Price */}
+
+            <div>
+              <label className="block mb-3 font-semibold text-orange-200">
+                Maximum Price
+              </label>
+
+              <div className="bg-slate-800 rounded-2xl p-4">
+                <p className="text-yellow-300 font-bold text-xl mb-3">
+                  ₹{maxPrice.toLocaleString()}
+                </p>
+
+                <input
+                  type="range"
+                  min="4999"
+                  max="149999"
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Number(e.target.value))}
+                  className="w-full accent-orange-500 cursor-pointer"
+                />
+
+                <div className="flex justify-between text-sm text-gray-400 mt-2">
+                  <span>₹4,999</span>
+
+                  <span>₹149,999</span>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
       </div>
+
+      {/* Product Grid */}
+
+      {filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 relative z-10">
+          {filteredProducts.map((product, index) => (
+            <div
+              key={product.id || index}
+              onClick={() => handleViewDetails(product.id)}
+              className="group cursor-pointer bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden hover:-translate-y-3 hover:border-orange-400/30 hover:shadow-[0_0_35px_rgba(255,165,0,0.25)] transition-all duration-500"
+            >
+              {/* Product Image */}
+
+              <div className="relative overflow-hidden">
+                <img
+                  src={
+                    Array.isArray(product.productImages)
+                      ? product.productImages[0]
+                      : product.productImages
+                  }
+                  alt={product.productName}
+                  className="w-full h-64 object-cover group-hover:scale-110 transition duration-700"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src =
+                      "https://via.placeholder.com/400x300?text=No+Image";
+                  }}
+                />
+
+                <div className="absolute top-3 right-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                  ₹{product.price}
+                </div>
+              </div>
+
+              {/* Product Details */}
+
+              <div className="p-5">
+                <h3 className="text-xl font-bold text-white mb-3">
+                  {product.productName}
+                </h3>
+
+                <div className="inline-block bg-cyan-500/20 border border-cyan-400/20 px-3 py-1 rounded-full text-cyan-300 text-sm mb-4">
+                  {product.productCategory}
+                </div>
+
+                <div className="bg-green-500/10 border border-green-400/20 rounded-xl px-3 py-2 mb-4">
+                  <p className="text-green-300 text-sm">
+                    Seller: {product.storeName}
+                  </p>
+                </div>
+
+                <button className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 py-3 rounded-xl font-semibold hover:scale-105 transition duration-300">
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 relative z-10">
+          <div className="text-8xl mb-6">🔍</div>
+
+          <h2 className="text-3xl font-bold text-orange-300 mb-4">
+            No Products Found
+          </h2>
+
+          <p className="text-gray-400 text-lg">
+            Try changing your search term, category, or price range.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

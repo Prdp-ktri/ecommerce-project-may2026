@@ -12,15 +12,15 @@
       "id": "9d19"
     },
     {
-      "id": "242b",
       "name": "Pradeep Khatri",
       "age": "28",
       "email": "pradeepkhatri44@gmail.com",
       "phone": "+91-7726806658",
-      "password": "PK08@buyer",
+      "password": "PK08@Buyer",
       "address": "Nr BSNL Tower, Friend's Colony, Pushkar, Dist - Ajmer (RAJ)",
       "selectedState": "RJ",
-      "pin": "305022"
+      "pin": "305022",
+      "id": "242b"
     }
   ]
 }

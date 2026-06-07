@@ -72,101 +72,140 @@ function EditProfile() {
       .catch((err) => toast.error(err.message));
   };
 
-  if (loading)
-    return <p className="p-8 text-center text-gray-600">Loading...</p>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 flex items-center justify-center text-white">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-orange-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-xl text-orange-300">Loading Your Profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-yellow-50 p-6">
-      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full border-t-4 border-teal-500">
-        <h1 className="text-3xl font-bold text-teal-700 mb-6 text-center">
-          Edit Your Profile
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 text-white pt-32 px-6 pb-10 relative overflow-hidden w-full ma">
+      {/* Background Glow */}
+
+      <div className="absolute top-0 left-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl"></div>
+
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl"></div>
+
+      {/* Header */}
+
+      <div className="relative z-10 text-center mb-10">
+        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-orange-300 via-yellow-300 to-orange-500 bg-clip-text text-transparent mb-3">
+          Edit Profile
         </h1>
 
-        <form onSubmit={handleUpdatedProfile} className="space-y-6">
-          {/* Personal Info */}
-          <div>
-            <h2 className="text-xl font-semibold text-orange-800 mb-4">
-              Personal Information
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="number"
-                placeholder="Age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="phone"
-                placeholder="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-            </div>
-          </div>
+        <p className="text-gray-300 text-lg">
+          Keep your account details updated for a seamless shopping experience.
+        </p>
+      </div>
 
-          {/* Address Info */}
-          <div>
-            <h2 className="text-xl font-semibold text-orange-800 mb-4">
-              Address
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="text"
-                placeholder="State"
-                value={selectedState}
-                onChange={(e) => setSelectedState(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-              <input
-                type="number"
-                placeholder="PIN Code"
-                value={pin}
-                onChange={(e) => setPin(e.target.value)}
-                className="p-3 border rounded-lg focus:ring-2 focus:ring-teal-400 focus:outline-none w-full"
-              />
-            </div>
-          </div>
+      {/* Main Card */}
 
-          {/* Submit Button */}
-          <div className="text-center">
-            <button
-              type="submit"
-              className="px-6 py-3 bg-teal-500 text-white font-semibold rounded-lg shadow-md hover:bg-teal-600 transition duration-300"
-            >
-              Update Profile
-            </button>
-          </div>
-        </form>
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="w-full bg-white/10 backdrop-blur-xl border border-white/10 rounded-none md:rounded-3xl p-8 shadow-2xl">
+          <form onSubmit={handleUpdatedProfile} className="space-y-10">
+            {/* PERSONAL INFO */}
+
+            <div>
+              <h2 className="text-2xl font-bold text-orange-300 mb-6">
+                Personal Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="number"
+                  placeholder="Age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="md:col-span-2 bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* ADDRESS */}
+
+            <div>
+              <h2 className="text-2xl font-bold text-orange-300 mb-6">
+                Address Information
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input
+                  type="text"
+                  placeholder="Full Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="md:col-span-2 bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="text"
+                  placeholder="State"
+                  value={selectedState}
+                  onChange={(e) => setSelectedState(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+
+                <input
+                  type="number"
+                  placeholder="PIN Code"
+                  value={pin}
+                  onChange={(e) => setPin(e.target.value)}
+                  className="bg-slate-800 border border-orange-400/20 rounded-2xl p-4 text-white placeholder-gray-400 focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                />
+              </div>
+            </div>
+
+            {/* BUTTON */}
+
+            <div className="flex justify-center pt-4">
+              <button
+                type="submit"
+                className="group relative overflow-hidden px-10 py-4 rounded-2xl bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 text-white font-bold text-lg shadow-[0_0_25px_rgba(255,165,0,0.35)] hover:scale-105 hover:shadow-[0_0_35px_rgba(255,165,0,0.5)] transition-all duration-300"
+              >
+                <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition"></span>
+
+                <span className="relative">Update Profile</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
