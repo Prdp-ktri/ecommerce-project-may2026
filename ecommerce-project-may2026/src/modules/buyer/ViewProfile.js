@@ -28,11 +28,31 @@ function ViewProfile() {
       .finally(() => setLoading(false));
   }, [navigate]);
 
-  if (loading)
-    return <p className="p-8 text-center text-gray-600">Loading profile...</p>;
+  if (loading) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 flex items-center justify-center text-white">
+      <div className="text-center">
+        <div className="w-16 h-16 border-4 border-orange-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-xl text-orange-300">
+          Loading Profile...
+        </p>
+      </div>
+    </div>
+  );
+}
 
-  if (!buyer)
-    return <p className="p-8 text-center text-red-500">Profile not found!</p>;
+  if (!buyer) {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 flex items-center justify-center text-white">
+      <div className="text-center">
+        <div className="text-7xl mb-4">👤</div>
+        <h2 className="text-3xl font-bold text-orange-300">
+          Profile Not Found
+        </h2>
+      </div>
+    </div>
+  );
+}
 
   return (
   <div className="min-h-screen bg-gradient-to-br from-slate-950 via-orange-950 to-slate-900 text-white pt-32 px-6 pb-10 relative overflow-hidden">
