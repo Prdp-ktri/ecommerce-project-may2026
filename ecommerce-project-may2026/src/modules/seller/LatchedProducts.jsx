@@ -6,21 +6,22 @@ function LatchedProducts() {
   const [editedQuantity, setEditedQuantity] = useState("");
   const [editedPrice, setEditedPrice] = useState("");
 
-  // Load latched products from localStorage
   useEffect(() => {
     const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
+
     if (loggedInSeller) {
       const storageKey = `latchedProducts_${loggedInSeller.email}`;
       const stored = localStorage.getItem(storageKey);
+
       if (stored) {
         setLatchedProducts(JSON.parse(stored));
       }
     }
   }, []);
 
-  // Save to localStorage whenever products change
   const updateLocalStorage = (updatedProducts) => {
     const loggedInSeller = JSON.parse(localStorage.getItem("loggedInSeller"));
+
     if (!loggedInSeller) return;
 
     const updatedWithSeller = updatedProducts.map((p) => ({
@@ -31,144 +32,296 @@ function LatchedProducts() {
     }));
 
     const storageKey = `latchedProducts_${loggedInSeller.email}`;
+
     localStorage.setItem(storageKey, JSON.stringify(updatedWithSeller));
     setLatchedProducts(updatedWithSeller);
   };
 
-  // Remove a product
   const handleRemove = (index) => {
     const updated = latchedProducts.filter((_, i) => i !== index);
     updateLocalStorage(updated);
   };
 
-  // Start editing a product
   const handleEdit = (index) => {
     setEditIndex(index);
     setEditedQuantity(latchedProducts[index].quantity);
     setEditedPrice(latchedProducts[index].price);
   };
 
-  // Save edited values
   const handleSave = (index) => {
     const updated = [...latchedProducts];
+
     updated[index].quantity = editedQuantity;
     updated[index].price = editedPrice;
+
     updateLocalStorage(updated);
     setEditIndex(null);
   };
 
-  // Cancel editing
   const handleCancel = () => {
     setEditIndex(null);
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold text-teal-700 mb-4">Latched Products</h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-teal-950 to-slate-900 text-white pt-32 px-6 pb-10 relative overflow-hidden">
+      {/* Background Effects */}
+
+      <div className="absolute top-0 left-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"></div>
+
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl"></div>
+
+      <div className="absolute top-36 right-8 text-[180px] opacity-10 animate-bounce">
+        📦
+      </div>
+
+      <div className="absolute bottom-16 left-6 text-[180px] opacity-10 animate-pulse">
+        🚚
+      </div>
+
+      {/* Header */}
+
+      <div className="relative z-10 text-center mb-10">
+        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-cyan-300 via-teal-300 to-emerald-400 bg-clip-text text-transparent mb-4">
+          Latched Products Inventory
+        </h1>
+
+        <p className="text-gray-300 text-lg">
+          Manage pricing, stock quantities and inventory listings.
+        </p>
+
+        <div className="inline-block mt-4 px-5 py-2 rounded-full bg-cyan-500/20 border border-cyan-400/20">
+          <span className="text-cyan-300 font-semibold">
+            {latchedProducts.length} Products Latched
+          </span>
+        </div>
+      </div>
 
       {latchedProducts.length === 0 ? (
-        <p>No products latched yet.</p>
+        <div className="relative z-10 flex flex-col items-center justify-center py-32">
+          <div className="text-8xl mb-6 animate-bounce">📦</div>
+
+          <h2 className="text-3xl font-bold text-cyan-300 mb-3">
+            No Products Latched Yet
+          </h2>
+
+          <p className="text-gray-400">
+            Start latching products to build your inventory.
+          </p>
+        </div>
       ) : (
         <div
           className="
-            grid 
-            grid-cols-1 
-            sm:grid-cols-2 
-            md:grid-cols-3 
-            lg:grid-cols-4 
-            gap-6
-          "
+          relative z-10
+          grid
+          grid-cols-1
+          sm:grid-cols-2
+          lg:grid-cols-3
+          xl:grid-cols-4
+          gap-8
+        "
         >
           {latchedProducts.map((product, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-lg p-4 hover:shadow-2xl transition-shadow duration-300 flex flex-col items-center relative"
+              className="
+                group
+                bg-white/10
+                backdrop-blur-xl
+                border border-white/10
+                rounded-3xl
+                p-5
+                hover:-translate-y-3
+                hover:border-cyan-400/30
+                hover:shadow-[0_0_35px_rgba(34,211,238,0.25)]
+                transition-all
+                duration-500
+                relative
+              "
             >
               {/* Remove Button */}
+
               <button
                 onClick={() => handleRemove(index)}
-                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xl rounded-full w-8 h-8 flex items-center justify-center"
+                className="
+                  absolute
+                  top-3
+                  right-3
+                  w-9
+                  h-9
+                  rounded-full
+                  bg-red-500/20
+                  border
+                  border-red-400/20
+                  hover:bg-red-500
+                  transition
+                  font-bold
+                "
+                style={{ zIndex: 5 }}
               >
-                X
+                ✕
               </button>
 
               {/* Product Image */}
-              <img
-                src={product.productImages}
-                alt={product.productName}
-                className="w-40 h-40 object-cover rounded-md mb-3"
-              />
+
+              <div className="overflow-hidden rounded-2xl">
+                <img
+                  src={product.productImages}
+                  alt={product.productName}
+                  className="
+                    w-full
+                    h-56
+                    object-cover
+                    rounded-2xl
+                    group-hover:scale-110
+                    transition
+                    duration-500
+                  "
+                />
+              </div>
 
               {/* Product Info */}
-              <h3 className="text-lg font-semibold">{product.productName}</h3>
-              <h3 className="text-sm text-black">
-                Product ID:<b> {product.id}</b>
-              </h3>
-              <p className="text-sm text-gray-600">{product.brandName}</p>
-              <p className="text-sm text-gray-600">{product.productCategory}</p>
 
-              {/* Quantity and Price */}
+              <h3 className="text-xl font-bold text-cyan-300 mt-4">
+                {product.productName}
+              </h3>
+
+              <p className="text-gray-400 mt-1">
+                Product ID:
+                <span className="text-white font-semibold"> {product.id}</span>
+              </p>
+
+              <p className="text-gray-400">
+                Brand:
+                <span className="text-white"> {product.brandName}</span>
+              </p>
+
+              <div className="mt-2">
+                <span className="bg-cyan-500/20 border border-cyan-400/20 text-cyan-300 px-3 py-1 rounded-full text-sm">
+                  {product.productCategory}
+                </span>
+              </div>
+
+              {/* Edit Section */}
+
               {editIndex === index ? (
-                <>
-                  <div className="mt-2">
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Quantity:
+                <div className="mt-5 space-y-4">
+                  <div>
+                    <label className="block text-sm text-cyan-300 mb-1">
+                      Quantity
                     </label>
+
                     <input
                       type="number"
                       value={editedQuantity}
                       onChange={(e) => setEditedQuantity(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-1 w-20 text-center"
+                      className="
+                        w-full
+                        bg-slate-800
+                        border
+                        border-cyan-400/20
+                        rounded-xl
+                        px-3
+                        py-2
+                        text-white
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-cyan-400
+                      "
                     />
                   </div>
 
-                  <div className="mt-2">
-                    <label className="block text-sm text-gray-700 mb-1">
-                      Price:
+                  <div>
+                    <label className="block text-sm text-cyan-300 mb-1">
+                      Selling Price
                     </label>
+
                     <input
                       type="number"
                       value={editedPrice}
                       onChange={(e) => setEditedPrice(e.target.value)}
-                      className="border border-gray-300 rounded-lg p-1 w-24 text-center"
+                      className="
+                        w-full
+                        bg-slate-800
+                        border
+                        border-cyan-400/20
+                        rounded-xl
+                        px-3
+                        py-2
+                        text-white
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-cyan-400
+                      "
                     />
                   </div>
 
-                  <div className="mt-3 flex gap-2">
+                  <div className="flex gap-3">
                     <button
                       onClick={() => handleSave(index)}
-                      className="bg-green-600 text-white font-semibold py-1 px-3 rounded-lg hover:bg-green-700"
+                      className="
+                        flex-1
+                        bg-gradient-to-r
+                        from-emerald-500
+                        to-green-500
+                        py-2
+                        rounded-xl
+                        font-semibold
+                        hover:scale-105
+                        transition
+                      "
                     >
                       Save
                     </button>
+
                     <button
                       onClick={handleCancel}
-                      className="bg-gray-400 text-white font-semibold py-1 px-3 rounded-lg hover:bg-gray-500"
+                      className="
+                        flex-1
+                        bg-slate-700
+                        py-2
+                        rounded-xl
+                        font-semibold
+                        hover:bg-slate-600
+                        transition
+                      "
                     >
                       Cancel
                     </button>
                   </div>
-                </>
+                </div>
               ) : (
                 <>
-                  <p className="text-sm text-gray-500 mt-2">
-                    Quantity: {product.quantity}{" "}
+                  <div className="mt-5 bg-slate-800/60 rounded-2xl p-3 border border-white/10">
+                    <p className="text-gray-300">
+                      Quantity:
+                      <span className="text-cyan-300 font-bold ml-2">
+                        {product.quantity}
+                      </span>
+                    </p>
+
+                    <p className="text-2xl font-bold text-yellow-300 mt-2">
+                      ₹{product.price}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 flex gap-3">
                     <button
                       onClick={() => handleEdit(index)}
-                      className="bg-blue-600 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 ml-2"
+                      className="
+                        flex-1
+                        bg-gradient-to-r
+                        from-cyan-500
+                        to-blue-500
+                        py-2
+                        rounded-xl
+                        font-semibold
+                        hover:scale-105
+                        transition-all
+                      "
                     >
-                      Edit
+                      Edit Listing
                     </button>
-                  </p>
-                  <p className="text-teal-700 font-bold text-lg mt-2">
-                    ₹{product.price}{" "}
-                    <button
-                      onClick={() => handleEdit(index)}
-                      className="bg-teal-600 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:bg-teal-700 transition duration-300 ml-2"
-                    >
-                      Edit
-                    </button>
-                  </p>
+                  </div>
                 </>
               )}
             </div>
